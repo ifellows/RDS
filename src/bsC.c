@@ -82,6 +82,7 @@ void bsC (
 	}
 	for (i=0; i<ni; i++){
 	  crefs[i]=0;
+	  csample[i]=0;
 	}
 	for (i=0; i<ni; i++){
 	    if(nrefs[i] > 0){crefs[nrefs[i]-1]++;}
@@ -289,7 +290,7 @@ void bsC (
 	 csample[mm] = nextresp;
 	 countrefs++;
 //      numberfrom is the number of recruits to get for the current recruiter
-	 if((mm<ni)&(countrefs==numberfrom)){
+	 if((mm<ni)&&(countrefs==numberfrom)){
 	  activnode++;                     // move to the next seed (or node)!!! i=i+1
 	  countrefs=0;
 	  rU = unif_rand()*crefs[ni-1];
@@ -310,7 +311,7 @@ void bsC (
 	 den+=temp;
 	 den2+=(temp*temp);
 	 est[idis[csample[i]]+gi*isamp]+=temp;
-//	Rprintf("csample %d pix %d pis %f\n",csample[i], csample[i]-UKi*(csample[i]/UKi),pis[csample[i]-UKi*(csample[i]/UKi)]);
+	 //	Rprintf("csample %d pix %d pis %f\n",csample[i], csample[i]-UKi*(csample[i]/UKi),pis[csample[i]-UKi*(csample[i]/UKi)]);
 //	  if(csample[i]<0 | csample[i]>(ci-1)){Rprintf("Error: i %d csample[i] %d\n",i, csample[i]);}
 	}
 //	Rprintf("est[0] %f est[1] %f\n",est[0],est[1]);

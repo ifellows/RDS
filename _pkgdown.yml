@@ -1,0 +1,107 @@
+title: RDS
+url: https://unhcr-web.github.io/unhcRstyle/docs/
+template:
+  params:
+    bootswatch: yeti
+navbar:
+  title: RDS Respondent Driven Sampling
+  left:
+  - text: "Articles"
+    menu:
+     - text: Tutorial How to start
+       href: articles/How-to.html
+  - text: Reference
+    href: reference/index.html
+
+reference:
+  - title: Initial Import
+    contents:
+      - as.rds.data.frame
+      - is.rds.data.frame
+      - assert.valid.rds.data.frame
+      - compute.weights
+      - show.rds.data.frame
+      - rid.from.coupons
+      - rdssampleC
+  - title: Reading  & Writing Objects
+    contents:
+      - write.rdsat
+      - read.rdsat
+      - write.rdsobj
+      - read.rdsobj
+      - write.graphviz
+      - write.netdraw
+  - title: Plot
+    contents:
+      - plot.rds.data.frame
+      - get.number.of.recruits
+      - get.seed.id
+      - get.wave
+      - reingold.tilford.plot
+  - title: Perform tests
+    contents:
+      - LRT.trend
+      - LRT.trend.test
+      - LRT.value.trend
+  - title: Calculating estimates
+    contents:
+      - MA.estimates
+      - RDS.HCG.estimates
+      - RDS.I.estimates
+      - RDS.II.estimates
+      - RDS.SS.estimates
+      - RDS.bootstrap.intervals
+      - RDS.compare.proportions
+      - RDS.compare.two.proportions
+      - cumulative.estimate
+      - differential.activity.estimates
+      - homophily.estimates
+      - vh.weights
+  - title: Print output
+    contents:
+      - export.rds.interval.estimate
+      - rds.interval.estimate
+      - is.rds.interval.estimate
+      - is.rds.interval.estimate.list
+      - as.char
+  - title: Bootstrap
+    contents:
+      - bootstrap.contingency.test
+      - bootstrap.incidence
+      - bottleneck.plot
+      - control.rds.estimates
+      - convergence.plot
+      - count.transitions
+  - title: Printing Results
+    contents:
+      - print.differential.activity.estimate
+      - print.pvalue.table
+      - print.rds.contin.bootstrap
+      - print.rds.data.frame
+      - print.rds.interval.estimate
+      - print.summary.svyglm.RDS
+      - summary.svyglm.RDS
+  - title: Utilities functions
+    contents:
+      - get.h.hat
+      - get.id
+      - get.net.size
+      - get.population.size
+      - get.recruitment.time
+      - get.rid
+      - get.seed.rid
+      - get.stationary.distribution
+      - gile.ss.weights
+      - has.recruitment.time
+      - hcg.weights
+      - impute.degree
+      - impute.visibility_mle
+      - rds.I.weights
+      - set.control.class
+      - ult
+  - title: Demo Dataset
+    contents:
+      - faux
+      - fauxmadrona
+      - fauxsycamore
+      - fauxtime
