@@ -6,9 +6,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Estimates each person's personal visibility based on their self-reported degree and the 
- number of their (direct) recruits. It uses the time the person was recruited as a factor in 
- determining the number of recruits they produce. — impute.visibility_mle • RDS</title>
+<title>Estimates each person's personal visibility based on their self-reported degree and the
+ number of their (direct) recruits. It uses the time the person was recruited as a factor in
+ determining the number of recruits they produce. — impute.visibility • RDS</title>
 
 
 <!-- jquery -->
@@ -41,11 +41,11 @@
 
 
 
-<meta property="og:title" content="Estimates each person's personal visibility based on their self-reported degree and the 
- number of their (direct) recruits. It uses the time the person was recruited as a factor in 
- determining the number of recruits they produce. — impute.visibility_mle" />
-<meta property="og:description" content="Estimates each person's personal visibility based on their self-reported degree and the 
- number of their (direct) recruits. It uses the time the person was recruited as a factor in 
+<meta property="og:title" content="Estimates each person's personal visibility based on their self-reported degree and the
+ number of their (direct) recruits. It uses the time the person was recruited as a factor in
+ determining the number of recruits they produce. — impute.visibility" />
+<meta property="og:description" content="Estimates each person's personal visibility based on their self-reported degree and the
+ number of their (direct) recruits. It uses the time the person was recruited as a factor in
  determining the number of recruits they produce." />
 
 
@@ -120,34 +120,24 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Estimates each person's personal visibility based on their self-reported degree and the 
- number of their (direct) recruits. It uses the time the person was recruited as a factor in 
+    <h1>Estimates each person's personal visibility based on their self-reported degree and the
+ number of their (direct) recruits. It uses the time the person was recruited as a factor in
  determining the number of recruits they produce.</h1>
     <small class="dont-index">Source: <a href='https://github.com/ifellows/RDS/blob/master/R/me.impute.R'><code>R/me.impute.R</code></a></small>
-    <div class="hidden name"><code>impute.visibility_mle.Rd</code></div>
+    <div class="hidden name"><code>impute.visibility.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Estimates each person's personal visibility based on their self-reported degree and the 
- number of their (direct) recruits. It uses the time the person was recruited as a factor in 
+    <p>Estimates each person's personal visibility based on their self-reported degree and the
+ number of their (direct) recruits. It uses the time the person was recruited as a factor in
  determining the number of recruits they produce.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>impute.visibility_mle</span><span class='op'>(</span>
-  <span class='va'>rds.data</span>,
-  max.coupons <span class='op'>=</span> <span class='cn'>NULL</span>,
+    <pre class="usage"><span class='fu'>impute.visibility</span><span class='op'>(</span><span class='va'>rds.data</span>, max.coupons <span class='op'>=</span> <span class='cn'>NULL</span>,
   type.impute <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"distribution"</span>, <span class='st'>"mode"</span>, <span class='st'>"median"</span>, <span class='st'>"mean"</span><span class='op'>)</span>,
-  recruit.time <span class='op'>=</span> <span class='cn'>NULL</span>,
-  include.tree <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  unit.scale <span class='op'>=</span> <span class='cn'>NULL</span>,
-  unit.model <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"cmp"</span>, <span class='st'>"nbinom"</span><span class='op'>)</span>,
-  optimism <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  guess <span class='op'>=</span> <span class='cn'>NULL</span>,
-  reflect.time <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  maxit <span class='op'>=</span> <span class='fl'>100</span>,
-  K <span class='op'>=</span> <span class='cn'>NULL</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+  recruit.time <span class='op'>=</span> <span class='cn'>NULL</span>, include.tree <span class='op'>=</span> <span class='cn'>FALSE</span>, unit.scale <span class='op'>=</span> <span class='cn'>NULL</span>,
+  unit.model <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"nbinom"</span>, <span class='st'>"cmp"</span><span class='op'>)</span>, optimism <span class='op'>=</span> <span class='cn'>FALSE</span>, guess <span class='op'>=</span> <span class='cn'>NULL</span>,
+  reflect.time <span class='op'>=</span> <span class='cn'>TRUE</span>, maxit <span class='op'>=</span> <span class='fl'>100</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,14 +148,14 @@
     </tr>
     <tr>
       <th>max.coupons</th>
-      <td><p>The number of recruitment coupons distributed to each 
+      <td><p>The number of recruitment coupons distributed to each
 enrolled subject (i.e. the maximum number of recruitees for any subject).
      By default it is taken by the attribute or data, else the maximum recorded number of coupons.</p></td>
     </tr>
     <tr>
       <th>type.impute</th>
-      <td><p>The type of imputation based on the conditional distribution. 
-It can be of type <code>distribution</code>,<code>mode</code>,<code>median</code>, or <code>mean</code> 
+      <td><p>The type of imputation based on the conditional distribution.
+It can be of type <code>distribution</code>,<code>mode</code>,<code>median</code>, or <code>mean</code>
 with the first , the default, being a random draw from the conditional distribution.</p></td>
     </tr>
     <tr>
@@ -180,7 +170,7 @@ Otherwise, the recruitment time is used in the model to better predict the visib
     </tr>
     <tr>
       <th>include.tree</th>
-      <td><p>logical; If <code>TRUE</code>, 
+      <td><p>logical; If <code>TRUE</code>,
 augment the reported network size by the number of recruits and one for the recruiter (if any).
 This reflects a more accurate value for the visibility, but is not the self-reported degree.
 In particular, it typically produces a positive visibility (compared to a possibility zero self-reported degree).</p></td>
@@ -189,21 +179,21 @@ In particular, it typically produces a positive visibility (compared to a possib
       <th>unit.scale</th>
       <td><p>numeric; If not <code>NULL</code> it sets the numeric value of the scale parameter
 of the distribution of the unit sizes.
-For the negative binomial, it is the multiplier on the variance of the negative binomial 
-compared to a Poisson (via the Poisson-Gamma mixture representation). Sometimes the scale is 
-unnaturally large (e.g. 40) so this give the option of fixing it (rather than using
+For the negative binomial, it is the multiplier on the variance of the negative binomial
+compared to a Poisson (via the Poisson-Gamma mixture representation). Sometimes the scale is
+unnaturally large (e.g. 40) so this give the option of fixing it (rather than use
 the MLE of it). The model is fit with the parameter fixed at this passed value.</p></td>
     </tr>
     <tr>
       <th>unit.model</th>
       <td><p>The type of distribution for the unit sizes.
-It can be of <code>nbinom</code>, meaning a negative binomial. 
-In this case, <code>unit.scale</code> is the multiplier 
+It can be of <code>nbinom</code>, meaning a negative binomial.
+In this case, <code>unit.scale</code> is the multiplier
 on the variance of the negative binomial compared to a Poisson of the same mean.
 The alternative is <code>cmp</code>, meaning a Conway-Maxwell-Poisson distribution.
 In this case, <code>unit.scale</code>
-is the scale parameter compared to a Poisson of the same mean (values less than one mean 
-under-dispersed and values over one mean over-dispersed). The default is <code>cmp</code>.</p></td>
+is the scale parameter compared to a Poisson of the same mean (values less than one mean
+under-dispersed and values over one mean over-dispersed).</p></td>
     </tr>
     <tr>
       <th>optimism</th>
@@ -216,7 +206,7 @@ the (proportional) inflation of the self-reported degrees relative to the unit s
     </tr>
     <tr>
       <th>reflect.time</th>
-      <td><p>logical; If <code>FALSE</code> then the <code>recruit.time</code> is the time before the 
+      <td><p>logical; If <code>FALSE</code> then the <code>recruit.time</code> is the time before the
 end of the study (instead of the time since the survey started or chronological time).</p></td>
     </tr>
     <tr>
@@ -224,29 +214,19 @@ end of the study (instead of the time since the survey started or chronological 
       <td><p>integer; The maximum number of iterations in the likelihood maximization. By default it is 100.</p></td>
     </tr>
     <tr>
-      <th>K</th>
-      <td><p>integer; The maximum degree. All self-reported degrees above this are recorded as being at least K.
-By default it is the 95th percentile of the self-reported network sizes.</p></td>
-    </tr>
-    <tr>
       <th>verbose</th>
       <td><p>logical; if this is <code>TRUE</code>, the program will print out additional</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>McLaughlin, K.R., M.S. Handcock, and L.G. Johnston, 2015. 
-Inference for the visibility distribution for respondent-driven sampling. 
-In JSM Proceedings. Alexandria, VA: American Statistical Association. 2259-2267.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>fauxmadrona</span><span class='op'>)</span>
 <span class='co'># The next line fits the model for the self-reported personal</span>
-<span class='co'># network sizes and imputes the personal network sizes </span>
+<span class='co'># network sizes and imputes the personal network sizes</span>
 <span class='co'># It may take up to 60 seconds.</span>
-<span class='va'>visibility</span> <span class='op'>&lt;-</span> <span class='fu'><a href='impute.visibility.html'>impute.visibility</a></span><span class='op'>(</span><span class='va'>fauxmadrona</span><span class='op'>)</span>
+<span class='va'>visibility</span> <span class='op'>&lt;-</span> <span class='fu'>impute.visibility</span><span class='op'>(</span><span class='va'>fauxmadrona</span><span class='op'>)</span>
 <span class='co'># frequency of estimated personal visibility</span>
 <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>visibility</span><span class='op'>)</span>
 <span class='op'>}</span>

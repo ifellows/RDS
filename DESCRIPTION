@@ -16,12 +16,16 @@ Description: Provides functionality for carrying out estimation
     See Gile and Handcock (2010) <doi:10.1111/j.1467-9531.2010.01223.x> and
     Gile and Handcock (2015) <doi:10.1111/rssa.12091>.
 License: LGPL-2.1
-URL: http://www.hpmrg.org
 Depends: R (>= 2.5.1), methods
 Suggests: survey, testthat
 Imports: gridExtra, ggplot2 (>= 2.0.0), network, igraph, reshape2,
         scales, anytime, Hmisc, statnet.common, ergm, isotone
+URL: https://github.com/ifellows/RDS
+BugReports: https://github.com/ifellows/RDS/issues
+SystemRequirements: Pandoc (>= 2.2.3)
+VignetteBuilder: knitr
 Encoding: UTF-8
+LazyData: true
 RoxygenNote: 7.1.1
 NeedsCompilation: yes
 Packaged: 2019-12-14 01:21:21 UTC; handcock

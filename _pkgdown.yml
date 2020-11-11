@@ -1,5 +1,5 @@
 title: RDS
-url: https://unhcr-web.github.io/unhcRstyle/docs/
+url: https://github.com/ifellows/RDS
 template:
   params:
     bootswatch: yeti

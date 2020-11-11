@@ -59,7 +59,14 @@
   <a href="reference/index.html">Reference</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/ifellows/RDS/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -71,6 +78,7 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
 <div id="rds" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#rds" class="anchor"></a>RDS</h1></div>
@@ -82,6 +90,27 @@
 <li>diagnostic analysis</li>
 <li>allows for the analysis of multiple variables at once</li>
 </ul>
+<p>Provides functionality for carrying out estimation with data collected using Respondent-Driven Sampling. This includes Heckathorn’s RDS-I and RDS-II estimators as well as Gile’s Sequential Sampling estimator.</p>
+</div>
+<div id="information" class="section level1">
+<h1 class="hasAnchor">
+<a href="#information" class="anchor"></a>Information</h1>
+<p>See: <a href="http://www.hpmrg.org">hpmrg</a> and <a href="http://www.deducer.org/pmwiki/index.php?n=Main.RDSAnalyst">RDSAnalyst Wiki</a>.</p>
+<p>Please consult the package vignette for a detailed walk-through</p>
+</div>
+<div id="building-and-installing" class="section level1">
+<h1 class="hasAnchor">
+<a href="#building-and-installing" class="anchor"></a>Building and installing</h1>
+<p>Get the released version from CRAN:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"RDS"</span><span class="op">)</span></pre></div>
+<p>To build from this repository</p>
+<pre><code>R CMD build RDS
+R CMD INSTALL RDS_*.*.tar.gz</code></pre>
+<p>Or simply</p>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="co"># install.packages("devtools")</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"ifellows/RDS"</span><span class="op">)</span></pre></div>
 <div id="building-package-documentation" class="section level4">
 <h4 class="hasAnchor">
 <a href="#building-package-documentation" class="anchor"></a>Building package documentation</h4>
@@ -90,6 +119,7 @@
 <p><code><a href="https://pkgdown.r-lib.org/reference/build_site.html">pkgdown::build_site()</a></code></p>
 </div>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -97,6 +127,10 @@
 <h2>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=RDS">https://​cloud.r-project.org/​package=RDS</a>
+</li>
+<li>Browse source code at <br><a href="https://github.com/ifellows/RDS/">https://​github.com/​ifellows/​RDS/​</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/ifellows/RDS/issues">https://​github.com/​ifellows/​RDS/​issues</a>
 </li>
 </ul>
 </div>
