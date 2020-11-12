@@ -114,9 +114,8 @@
 <h2 class="hasAnchor">
 <a href="#set-up-load-packages" class="anchor"></a>Set Up: load packages</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ifellows/RDS">RDS</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ifellows/RDS">RDS</a></span><span class="op">)</span></pre></div>
 </div>
 <div id="import-export-and-reformat-data" class="section level2">
 <h2 class="hasAnchor">
@@ -135,17 +134,31 @@
 <div id="convert-data-to-rds-format" class="section level3">
 <h3 class="hasAnchor">
 <a href="#convert-data-to-rds-format" class="anchor"></a>Convert Data to RDS Format</h3>
-<p><code>as.rds.data.frame</code> RDS Object: <em>.rdsobj, </em>.rdsat</p>
 <p>Whether you automatically access the data conversion function upon uploading data or choose it from the Data menu, there are two possible RDS data formats:</p>
-<div id="coupon-format" class="section level4">
+<div id="recruiter-id-format-long-format" class="section level4">
 <h4 class="hasAnchor">
-<a href="#coupon-format" class="anchor"></a>Coupon format</h4>
-<p>In this format there are several columns in the data containing coupon numbers. One column is for each respondent’s own coupon, and the others (e.g. coupon.1, coupon.2, etc.) list the coupons they may have distributed. Thus, the recruitment path is stored through the coupon numbers. The seeds generally have own coupon numbers of 0, NA or something similar. Upon conversion, columns identifying each respondent’s recruiter ID, wave and seed are created if not already present.</p>
-</div>
-<div id="recruiter-id-format" class="section level4">
-<h4 class="hasAnchor">
-<a href="#recruiter-id-format" class="anchor"></a>Recruiter ID format</h4>
+<a href="#recruiter-id-format-long-format" class="anchor"></a>Recruiter ID format (long-format)</h4>
 <p>Rather than tracking recruitment paths through coupons, in this format a Recruiter ID column records the subject ID of the recruiter for each respondent. Seeds are identified by a shared recruiter ID such as 0. Upon conversion, columns identifying each respondent’s wave and seed are created if not already present. Example: Convert nyjazz data set to RDS coupon format</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"faux"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"fauxmadrona"</span><span class="op">)</span>
+
+<span class="co"># We'll convert the 'faux' dataset into a tibble similar to what we'd get from reading in a CSV for illustration purposes</span>
+<span class="va">faux</span> <span class="op">&lt;-</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="va">faux</span><span class="op">)</span>
+
+<span class="co"># And then back to the proper format</span>
+<span class="va">faux</span> <span class="op">&lt;-</span> 
+  <span class="va">faux</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/as.rds.data.frame.html">as.rds.data.frame</a></span><span class="op">(</span>
+    id <span class="op">=</span> <span class="st">"id"</span>,
+    recruiter.id <span class="op">=</span> <span class="st">"recruiter.id"</span>,
+    network.size <span class="op">=</span> <span class="st">"network.size"</span><span class="op">)</span></pre></div>
+</div>
+<div id="coupon-format-wide-format" class="section level4">
+<h4 class="hasAnchor">
+<a href="#coupon-format-wide-format" class="anchor"></a>Coupon format (wide-format)</h4>
+<p>In this format there are several columns in the data containing coupon numbers. One column is for each respondent’s own coupon, and the others (e.g. coupon.1, coupon.2, etc.) list the coupons they may have distributed. Thus, the recruitment path is stored through the coupon numbers. The seeds generally have own coupon numbers of 0, NA or something similar. Upon conversion, columns identifying each respondent’s recruiter ID, wave and seed are created if not already present.</p>
+<p>Data in coupon format has to be converted to recruiter format before being passed to <code><a href="../reference/as.rds.data.frame.html">as.rds.data.frame()</a></code>. The standard <code>dplyr</code> tibble pivoting verbs can be of help here.</p>
 </div>
 <div id="common-data-problems-solutions" class="section level4">
 <h4 class="hasAnchor">
@@ -157,9 +170,6 @@
 <li><p>Importing Recruiter ID Format Problem All seeds must have the same recruiter ID which can not be present in the Subject ID Symptom Error shown in console or incorrect recruitment tree plots Solution 1.Manually edit the recruiter id’s of the seeds. 2.Look to make sure the seeds’ recruiter id is not present in the subject id.</p></li>
 <li><p>Rounding error in IDS Problem Coupon or ID variables are numeric and some have 15 or more digits. Symptom Recruitment structure incorrectly read in except when using .rdsat and .rdsobj formats. Solution 1.Edit variables to have non-numeric type (e.g. add a “c” to the beginning of all coupon variables). 2.Put data file in .rdsat format</p></li>
 </ul>
-<p>Example on nyjazzdf</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co">#mtcars[c("V8")] &lt;- recode.variables(mtcars[c("cyl")] , "8 -&gt; 1;else -&gt; 0;") </span></pre></div>
 </div>
 </div>
 <div id="edit-rds-meta-data" class="section level3">
@@ -178,19 +188,92 @@
 <li>
 <strong>Population Size Estimate</strong>: Mid values may be used as the default population size.</li>
 </ul>
+<p>You can view those attributes the usual way:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/attributes.html">attributes</a></span><span class="op">(</span><span class="va">faux</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># passing to str() to reduce output size</span>
+<span class="co">#&gt; List of 25</span>
+<span class="co">#&gt;  $ names                          : chr [1:9] "id" "recruiter.id" "X" "Y" ...</span>
+<span class="co">#&gt;  $ row.names                      : int [1:389] 1 2 3 4 5 6 7 8 9 10 ...</span>
+<span class="co">#&gt;  $ notes                          : chr "This is an example data set provided in the RDS Analyst package. Type 'help(faux)' for information on it."</span>
+<span class="co">#&gt;  $ weight.type                    : chr "Gile's SS"</span>
+<span class="co">#&gt;  $ uncertainty                    : chr "Gile's SS"</span>
+<span class="co">#&gt;  $ network.size.variable          : chr "network.size"</span>
+<span class="co">#&gt;  $ id.variable                    : chr "id"</span>
+<span class="co">#&gt;  $ recruiter.id.variable          : chr "recruiter.id"</span>
+<span class="co">#&gt;  $ weights                        : num [1:389] 0.0259 0.0303 0.0269 0.0407 0.0233 ...</span>
+<span class="co">#&gt;  $ max.coupons                    : num 2</span>
+<span class="co">#&gt;  $ na.symbol                      : logi NA</span>
+<span class="co">#&gt;  $ number.of.bootstrap.samples    : num 20</span>
+<span class="co">#&gt;  $ confidence.level               : num 95</span>
+<span class="co">#&gt;  $ boxplots.pdf                   : chr "No"</span>
+<span class="co">#&gt;  $ stratify.boxplots              : chr "wave"</span>
+<span class="co">#&gt;  $ boxplots                       : chr "network.size"</span>
+<span class="co">#&gt;  $ number.ss.samples.per.iteration: num 2000</span>
+<span class="co">#&gt;  $ recruiter.id                   : chr "recruiter.id"</span>
+<span class="co">#&gt;  $ id                             : chr "id"</span>
+<span class="co">#&gt;  $ network.size                   : chr "network.size"</span>
+<span class="co">#&gt;  $ population.size.mid            : num 1000</span>
+<span class="co">#&gt;  $ population.size.low            : num 500</span>
+<span class="co">#&gt;  $ population.size.high           : num 1500</span>
+<span class="co">#&gt;  $ design                         :List of 9</span>
+<span class="co">#&gt;   ..$ cluster   :'data.frame':   389 obs. of  1 variable:</span>
+<span class="co">#&gt;   .. ..$ ids: int [1:389] 735 134 168 111 220 307 942 627 575 498 ...</span>
+<span class="co">#&gt;   ..$ strata    :'data.frame':   389 obs. of  1 variable:</span>
+<span class="co">#&gt;   .. ..$ V1: num [1:389] 1 1 1 1 1 1 1 1 1 1 ...</span>
+<span class="co">#&gt;   ..$ has.strata: logi FALSE</span>
+<span class="co">#&gt;   ..$ prob      : num [1:389] 0.414 0.484 0.43 0.65 0.372 ...</span>
+<span class="co">#&gt;   ..$ allprob   :'data.frame':   389 obs. of  1 variable:</span>
+<span class="co">#&gt;   .. ..$ weights: num [1:389] 0.414 0.484 0.43 0.65 0.372 ...</span>
+<span class="co">#&gt;   ..$ call      : language svydesign(ids = faux[[attr(faux, "id")]], weights = faux$weights, fpc = rep(attr(faux,      "population.size.mid"| __truncated__</span>
+<span class="co">#&gt;   ..$ variables :Classes 'rds.data.frame' and 'data.frame':  389 obs. of  8 variables:</span>
+<span class="co">#&gt;   .. ..$ id          : int [1:389] 735 134 168 111 220 307 942 627 575 498 ...</span>
+<span class="co">#&gt;   .. ..$ recruiter.id: int [1:389] 0 735 735 134 134 168 168 942 942 111 ...</span>
+<span class="co">#&gt;   .. ..$ X           : Factor w/ 2 levels "blue","red": 2 1 2 1 1 2 2 2 2 2 ...</span>
+<span class="co">#&gt;   .. ..$ Y           : Factor w/ 3 levels "black","blue",..: 1 1 1 1 1 3 2 3 1 1 ...</span>
+<span class="co">#&gt;   .. ..$ network.size: int [1:389] 16 20 17 32 14 25 43 28 11 10 ...</span>
+<span class="co">#&gt;   .. ..$ wave        : int [1:389] 0 1 1 2 2 2 2 3 3 3 ...</span>
+<span class="co">#&gt;   .. ..$ seed        : int [1:389] 735 735 735 735 735 735 735 735 735 735 ...</span>
+<span class="co">#&gt;   .. ..$ weights     : num [1:389] 2.41 2.07 2.33 1.54 2.69 ...</span>
+<span class="co">#&gt;   .. .. ..- attr(*, "N")= num 1000</span>
+<span class="co">#&gt;   .. .. ..- attr(*, "estimateN")= num 1000</span>
+<span class="co">#&gt;   .. ..- attr(*, "notes")= chr "This is an example data set provided in the RDS Analyst package. Type 'help(faux)' for information on it."</span>
+<span class="co">#&gt;   .. ..- attr(*, "weight.type")= chr "Gile's SS"</span>
+<span class="co">#&gt;   .. ..- attr(*, "uncertainty")= chr "Gile's SS"</span>
+<span class="co">#&gt;   .. ..- attr(*, "network.size.variable")= chr "network.size"</span>
+<span class="co">#&gt;   .. ..- attr(*, "id.variable")= chr "id"</span>
+<span class="co">#&gt;   .. ..- attr(*, "recruiter.id.variable")= chr "recruiter.id"</span>
+<span class="co">#&gt;   .. ..- attr(*, "weights")= num [1:389] 0.0259 0.0303 0.0269 0.0407 0.0233 ...</span>
+<span class="co">#&gt;   .. ..- attr(*, "max.coupons")= num 2</span>
+<span class="co">#&gt;   .. ..- attr(*, "na.symbol")= logi NA</span>
+<span class="co">#&gt;   .. ..- attr(*, "number.of.bootstrap.samples")= num 20</span>
+<span class="co">#&gt;   .. ..- attr(*, "confidence.level")= num 95</span>
+<span class="co">#&gt;   .. ..- attr(*, "boxplots.pdf")= chr "No"</span>
+<span class="co">#&gt;   .. ..- attr(*, "stratify.boxplots")= chr "wave"</span>
+<span class="co">#&gt;   .. ..- attr(*, "boxplots")= chr "network.size"</span>
+<span class="co">#&gt;   .. ..- attr(*, "number.ss.samples.per.iteration")= num 2000</span>
+<span class="co">#&gt;   .. ..- attr(*, "recruiter.id")= chr "recruiter.id"</span>
+<span class="co">#&gt;   .. ..- attr(*, "id")= chr "id"</span>
+<span class="co">#&gt;   .. ..- attr(*, "network.size")= chr "network.size"</span>
+<span class="co">#&gt;   .. ..- attr(*, "population.size.mid")= num 1000</span>
+<span class="co">#&gt;   .. ..- attr(*, "population.size.low")= num 500</span>
+<span class="co">#&gt;   .. ..- attr(*, "population.size.high")= num 1500</span>
+<span class="co">#&gt;   ..$ fpc       :List of 2</span>
+<span class="co">#&gt;   .. ..$ popsize : num [1:389, 1] 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 ...</span>
+<span class="co">#&gt;   .. ..$ sampsize: int [1:389, 1] 389 389 389 389 389 389 389 389 389 389 ...</span>
+<span class="co">#&gt;   .. ..- attr(*, "class")= chr "survey_fpc"</span>
+<span class="co">#&gt;   ..$ pps       : logi FALSE</span>
+<span class="co">#&gt;   ..- attr(*, "class")= chr [1:2] "survey.design2" "survey.design"</span>
+<span class="co">#&gt;  $ class                          : chr [1:2] "rds.data.frame" "data.frame"</span></pre></div>
 </div>
 <div id="recode-variables" class="section level3">
 <h3 class="hasAnchor">
 <a href="#recode-variables" class="anchor"></a>Recode Variables</h3>
-<p>The Recode Variables dialog allows to substitute values into existing variables, or create new variables based on current variables.</p>
-<p>The following example uses the mtcars data set, which can be loaded by entering data(mtcars) into the console.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co">#mtcars[c("V8")] &lt;- recode.variables(mtcars[c("cyl")] , "8 -&gt; 1;else -&gt; 0;") </span></pre></div>
+<p>If necessary, you can use the <code>forcats</code> package to recode, reorder, or collapse factors as necessary for analysis.</p>
 </div>
 <div id="export-save-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#export-save-data" class="anchor"></a>Export (Save) Data</h3>
-<p>The Export Data dialog (under the File menu) allows storage of RDS data in several formats:</p>
+<p>The <code>write.*</code> function of families can be used to export data into any of the following formats:</p>
 <ul>
 <li>
 <strong>RDS Analyst (.rdsobj)</strong> - Stores a RDS data frame in the native RDS analyst format, and does not need to be converted if re-imported to RDS Analyst (see RDSAnalystImportRDSData)</li>
@@ -200,50 +283,71 @@
 <li>
 <strong>GraphViz (.gz)</strong> - Stores a RDS data frame’s recruitment tree as a GraphViz file</li>
 </ul>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="../reference/write.rdsat.html">write.rdsat</a></span><span class="op">(</span><span class="va">faux</span>, <span class="st">"faux"</span><span class="op">)</span> <span class="co"># the '.rdsat' extension is added automatically</span></pre></div>
 </div>
 </div>
 <div id="visualize-and-summarize-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualize-and-summarize-data" class="anchor"></a>Visualize and Summarize Data</h2>
+<p>Since the <code>rds.data.frame</code> class only exists for method dispatch, you can inspect objects of <code>rds.data.frame</code> like any other data.frame by printing them to the console or using RStudio’s built-in data viewer.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co"># print to the console</span>
+<span class="fu">glimpse</span><span class="op">(</span><span class="va">faux</span><span class="op">)</span>
+<span class="co">#&gt; Rows: 389</span>
+<span class="co">#&gt; Columns: 9</span>
+<span class="co">#&gt; $ id           &lt;chr&gt; "735", "134", "168", "111", "220", "307", "942", "627", …</span>
+<span class="co">#&gt; $ recruiter.id &lt;chr&gt; "seed", "735", "735", "134", "134", "168", "168", "942",…</span>
+<span class="co">#&gt; $ X            &lt;fct&gt; red, blue, red, blue, blue, red, red, red, red, red, blu…</span>
+<span class="co">#&gt; $ Y            &lt;fct&gt; black, black, black, black, black, green, blue, green, b…</span>
+<span class="co">#&gt; $ Z            &lt;fct&gt; red, red, red, red, red, red, blue, red, red, red, blue,…</span>
+<span class="co">#&gt; $ network.size &lt;dbl&gt; 16, 20, 17, 32, 14, 25, 43, 28, 11, 10, 26, 21, 28, 22, …</span>
+<span class="co">#&gt; $ wave         &lt;int&gt; 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4,…</span>
+<span class="co">#&gt; $ seed         &lt;chr&gt; "735", "735", "735", "735", "735", "735", "735", "735", …</span>
+<span class="co">#&gt; $ weights      &lt;dbl&gt; 2.413615, 2.067591, 2.327383, 1.537643, 2.685803, 1.7583…</span>
+
+<span class="co"># built-in viewer (only works in interactive sessions)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/View.html">View</a></span><span class="op">(</span><span class="va">faux</span><span class="op">)</span></pre></div>
 <div id="plot-the-recruitment-tree" class="section level3">
 <h3 class="hasAnchor">
 <a href="#plot-the-recruitment-tree" class="anchor"></a>Plot the Recruitment Tree</h3>
 <p>The Plot Recruitment Tree produces a publication quality graphics plot of the recruitment tree. As shown below, you can use variables from the data to set the node color, size and labels of the recruitment tree.</p>
 <p>Are the chains long? Do most of the subjects come from the same seed? Visualize homophily.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">faux</span><span class="op">)</span></pre></div>
+<p><img src="How-to_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p>Underneath the hood, <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> calls <code><a href="../reference/reingold.tilford.plot.html">reingold.tilford.plot()</a></code> which allows for customizing the color, size, and labels of the vertices as desired. See the function documentation for more details and pass the arguments into <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code>.</p>
 </div>
 <div id="plot-recruitment-diagnostics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#plot-recruitment-diagnostics" class="anchor"></a>Plot Recruitment Diagnostics</h3>
 <p>The Recruitment Diagnostics creates up to five charts, providing a snapshot of the recruitment process:</p>
 <ul>
-<li>Network Size by wave<br>
-</li>
-<li>Recruits by wave<br>
-</li>
-<li>Recruits by Seeds<br>
-</li>
+<li>Network Size by wave</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">faux</span>, plot.type <span class="op">=</span> <span class="st">"Network size by wave"</span><span class="op">)</span></pre></div>
+<p><img src="How-to_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+<ul>
+<li>Recruits by wave</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+ <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">faux</span>, plot.type <span class="op">=</span> <span class="st">"Recruits by wave"</span><span class="op">)</span></pre></div>
+<p><img src="How-to_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<ul>
+<li>Recruits by Seeds</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+ <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">faux</span>, plot.type <span class="op">=</span> <span class="st">"Recruits per seed"</span><span class="op">)</span></pre></div>
+<p><img src="How-to_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<ul>
 <li>Recruits by subject</li>
 </ul>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+ <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">faux</span>, plot.type <span class="op">=</span> <span class="st">"Recruits per subject"</span><span class="op">)</span></pre></div>
+<p><img src="How-to_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 <p>Does network size change over the course of sampling? How many recruits are in each wave? How many recruits originate from each seed?</p>
-</div>
-<div id="plot-basic-statistics" class="section level3">
-<h3 class="hasAnchor">
-<a href="#plot-basic-statistics" class="anchor"></a>Plot Basic Statistics</h3>
-<p>Continuous Variables</p>
-<ul>
-<li>Look at descriptive statistics (Sample &gt; Descriptives)</li>
-<li>Plot histograms (Plots &gt; Quick &gt; Histogram)</li>
-</ul>
-<p>Categorical Variables</p>
-<ul>
-<li>Look at Frequencies (Sample &gt; Frequencies)</li>
-<li>Make bar charts (Plots &gt; Quick &gt; bar)</li>
-</ul>
-<p>Relationships</p>
-<ul>
-<li>Crosstabs (Sample &gt; Contingency Tables &gt; chi-squared)</li>
-<li>Descriptives with strata (Sample DescriptivesL mean, standard variation)</li>
-</ul>
 </div>
 </div>
 <div id="analyze-data" class="section level2">
@@ -253,13 +357,27 @@
 <h3 class="hasAnchor">
 <a href="#population-frequency-estimates" class="anchor"></a>Population Frequency Estimates</h3>
 <p>This dialog computes a point estimate and confidence interval of population frequency (prevalence), for one or more categorical variables.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu"><a href="../reference/RDS.bootstrap.intervals.html">RDS.bootstrap.intervals</a></span><span class="op">(</span><span class="va">faux</span>, outcome.variable <span class="op">=</span> <span class="st">"X"</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Note: Using the data's mid population size estimate: N = 1000 </span>
+<span class="co">#&gt; Using 98 bootstrap samples.</span>
+<span class="co">#&gt; Gile's SS Estimate for X </span>
+<span class="co">#&gt;      Estimate (%)         95% Interval Design Effect Std. Error     N</span>
+<span class="co">#&gt; blue         30.9 (   26.88,    34.95)          1.26       2.06   118</span>
+<span class="co">#&gt; red          69.1 (   65.05,    73.12)          1.26       2.06   271</span>
+<span class="co">#&gt;                                                           Total   389</span>
+<span class="co">#&gt; * Using population size estimate: 1000</span></pre></div>
 <p>The default method is Gile’s SS estimator, where the confidence interval is computed using Gile’s bootstrap method. This is a computationally-intensive procedure and can take a minute or longer to complete.</p>
 <div id="convergence-plot" class="section level4">
 <h4 class="hasAnchor">
 <a href="#convergence-plot" class="anchor"></a>Convergence Plot</h4>
 <p>Convergence plots help to determine whether the final RDS estimate is biased by the initial convenience sample of seeds. If the estimates shown in the plots do not level off as the sample size increases then the current estimate is probably biased by the choice of seeds. It is recommended to create a convergence plot of all traits of interest during the research process and extend sampling if the estimate has not stabilized.</p>
 <p>measures progression of enrolling subjects to determine when the proportion for a characteristic approaches and remains stable in relation to the adjusted estimate</p>
-<p>The convergence plots below show a data set that has converged (left, using fauxmadrona sample data) and one that has not (right).</p>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="fu"><a href="../reference/convergence.plot.html">convergence.plot</a></span><span class="op">(</span><span class="va">fauxmadrona</span>, outcome.variable <span class="op">=</span> <span class="st">"disease"</span><span class="op">)</span></pre></div>
+<p><img src="How-to_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p>The convergence plots below show a data set that has converged using fauxmadrona.</p>
 <p>Note that although the plot on the left shows convergence, there is a chance that additional data would not follow this trend. The recruitment tree could be stuck in a sub-population of the population of interest. This is discussed further below.</p>
 </div>
 <div id="bottleneck-plot" class="section level4">
@@ -273,22 +391,71 @@
 <p>An example of this scenario is described in “Diagnostics for Respondent-driven Sampling” (Gile, Johnston, Salganik 2012):</p>
 <p>“Imagine a city with street-based sex workers and brothel-based sex workers where there are many social connections within these groups, but few connections between these groups. Further, imagine that brothel-based sex workers use condoms regularly, whereas street-based sex workers do not. This situation will be problematic for RDS because the network”bottleneck" between the two groups will prevent the sample from exploring the entire population and could lead to inaccurate estimates about both sex worker type (i.e., brothel-based vs. street-based) and condom usage."</p>
 <p>Each line of a bottleneck plots tracks an estimate of a characteristic of an interest based on one of the seeds. If the estimates converge as the samples from each seed (their trees) grow, then there is no indication of a bottleneck along this characteristic.</p>
-<p>Below are two bottleneck plots prepared from the fauxmadrona data set. (To load fauxmadrona, select “Example: fauxmadrona” from the Packages &amp; Data menu). Both track the samples originating from each of the 10 seeds, as labeled by ID in the legend at right. (Note that the lines for each seed end at different places, reflecting the different sizes of the trees that originate from each seed.) The plot on the left tracks the estimate of the prevalence of disease in the population. While the estimates start at a range of values, they all converge toward about 20%, showing no evidence of divided sub-communities of infected and uninfected. Similarly, the plot at right tracks the samples along a completely randomized 0/1 indicator variable for the population. As expected, the prevalence estimates of this indicator converge toward .5, with some variation around that estimate.</p>
+<p>Below are two bottleneck plots prepared from the fauxmadrona data set. Both track the samples originating from each of the 10 seeds, as labeled by ID in the legend at right. (Note that the lines for each seed end at different places, reflecting the different sizes of the trees that originate from each seed.) The first plot tracks the estimate of the prevalence of disease in the population. While the estimates start at a range of values, they all converge toward about 20%, showing no evidence of divided sub-communities of infected and uninfected.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="fu"><a href="../reference/bottleneck.plot.html">bottleneck.plot</a></span><span class="op">(</span><span class="va">fauxmadrona</span>, outcome.variable <span class="op">=</span> <span class="st">"disease"</span><span class="op">)</span>
+<span class="co">#&gt; [1] "194"</span>
+<span class="co">#&gt; [1] "298"</span>
+<span class="co">#&gt; [1] "164"</span>
+<span class="co">#&gt; [1] "617"</span>
+<span class="co">#&gt; [1] "586"</span>
+<span class="co">#&gt; [1] "322"</span>
+<span class="co">#&gt; [1] "729"</span>
+<span class="co">#&gt; [1] "925"</span>
+<span class="co">#&gt; [1] "992"</span>
+<span class="co">#&gt; [1] "356"</span></pre></div>
+<p><img src="How-to_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p>Similarly, the plot at right tracks the samples along a completely randomized 0/1 indicator variable for the population. As expected, the prevalence estimates of this indicator converge toward .5, with some variation around that estimate.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="fu"><a href="../reference/bottleneck.plot.html">bottleneck.plot</a></span><span class="op">(</span><span class="va">fauxmadrona</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>random <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">fauxmadrona</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, outcome.variable <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span>
+<span class="co">#&gt; [1] "194"</span>
+<span class="co">#&gt; [1] "298"</span>
+<span class="co">#&gt; [1] "164"</span>
+<span class="co">#&gt; [1] "617"</span>
+<span class="co">#&gt; [1] "586"</span>
+<span class="co">#&gt; [1] "322"</span>
+<span class="co">#&gt; [1] "729"</span>
+<span class="co">#&gt; [1] "925"</span>
+<span class="co">#&gt; [1] "992"</span>
+<span class="co">#&gt; [1] "356"</span></pre></div>
+<p><img src="How-to_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
 <p>In comparison, a plot with evidence of bottlenecks is shown below. The estimates stabilize at different places depending on where the seeds originate.</p>
+<div class="figure">
+<img src="http://www.deducer.org/pmwiki/uploads/Main/bottleneck_plots2.png" alt=""><p class="caption">bottlenecked</p>
+</div>
 </div>
 </div>
 <div id="population-contingency-tables-crosstabs" class="section level3">
 <h3 class="hasAnchor">
 <a href="#population-contingency-tables-crosstabs" class="anchor"></a>Population Contingency Tables (Crosstabs)</h3>
-<p>The Population Crosstabs creates contingency tables for the target population based on inference from the sample. The tables show the estimated marginal and joint distribution of characteristics in the population. The column and row totals give point estimates (prevalence rates) for the selected variables – in the example below, the row totals give the percentage of “blue” and “red” in the population based on RDS-II sampling weights. The tables can optionally be stratified by another variable in the data. Below they are stratified by wave.</p>
+<p>The Population Crosstabs creates contingency tables for the target population based on inference from the sample. The tables show the estimated marginal and joint distribution of characteristics in the population. The column and row totals give point estimates (prevalence rates) for the selected variables – in the example below, the row totals give the percentage of “blue” and “red” in the population based on RDS-II sampling weights.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="fu"><a href="../reference/bootstrap.contingency.test.html">bootstrap.contingency.test</a></span><span class="op">(</span><span class="va">faux</span>, row.var <span class="op">=</span> <span class="st">"X"</span>, col.var <span class="op">=</span> <span class="st">"Y"</span>, table.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt;         black     blue    green</span>
+<span class="co">#&gt; blue 34.35742 64.51445 33.39407</span>
+<span class="co">#&gt; red  78.11537 84.97584 93.64284</span></pre></div>
 <p>Disclaimer: These tables do not show the uncertainty in the estimates. To get a sense of the uncertainty, use the Frequency Estimates dialog, which returns confidence intervals along with point estimates. The point estimates from that dialog should approximately match the ones here if the selected weight type and other settings match.</p>
-<p>If you would like to view a contingency table for the sample data alone (no inference on the population) use the Contingency Tables dialog under the Sample menu</p>
 </div>
 <div id="test-difference-in-population-proportions-prevalence" class="section level3">
 <h3 class="hasAnchor">
 <a href="#test-difference-in-population-proportions-prevalence" class="anchor"></a>Test Difference in Population Proportions / Prevalence</h3>
 <p>The Test Difference in Proportions is used to compare population frequency estimates. The table output of the population Frequency Estimates dialog is also produced here, but this dialog adds a comparison table.</p>
 <p>For example, the following compares the frequency of classes of the X and Y variables of the “faux” data set.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="va">est_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/RDS.bootstrap.intervals.html">RDS.bootstrap.intervals</a></span><span class="op">(</span><span class="va">faux</span>, outcome.variable <span class="op">=</span> <span class="st">"X"</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Note: Using the data's mid population size estimate: N = 1000 </span>
+<span class="co">#&gt; Using 98 bootstrap samples.</span>
+<span class="va">est_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/RDS.bootstrap.intervals.html">RDS.bootstrap.intervals</a></span><span class="op">(</span><span class="va">faux</span>, outcome.variable <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Note: Using the data's mid population size estimate: N = 1000 </span>
+<span class="co">#&gt; Using 107 bootstrap samples.</span>
+
+<span class="fu"><a href="../reference/RDS.compare.proportions.html">RDS.compare.proportions</a></span><span class="op">(</span><span class="va">est_x</span>, <span class="va">est_y</span><span class="op">)</span>
+<span class="co">#&gt; P-Value table comparing rates:</span>
+<span class="co">#&gt;      black   blue  green</span>
+<span class="co">#&gt; blue  0.06 0.6340 0.8880</span>
+<span class="co">#&gt; red   0.00 0.0718 0.1142</span></pre></div>
 </div>
 <div id="compute-sampling-weights" class="section level3">
 <h3 class="hasAnchor">
@@ -307,6 +474,8 @@
 <strong>RDS-II: The Volz-Heckathorn estimator</strong>, a generalized Horvitz-Thomspon form. Like Gile’s SS, it is based on inclusion probabilities for members of the sample, which are based on reported network sizes. It treats the sampling process as a random walk through the network of the target population.</li>
 </ul>
 <p>For Gile’s SS and RDS-II, weights will be unique for each reported network size. For RDS-I and RDS-I (DS), weights will be unique for each class of the Group Variable.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit">
+<span class="fu"><a href="../reference/compute.weights.html">compute.weights</a></span><span class="op">(</span><span class="va">fauxmadrona</span>, weight.type <span class="op">=</span> <span class="st">"Gile's SS"</span>, N <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">fauxmadrona</span>, <span class="st">"population.size.mid"</span><span class="op">)</span><span class="op">)</span></pre></div>
 </div>
 <div id="recruitment-homophily-population-homophily" class="section level3">
 <h3 class="hasAnchor">
@@ -315,16 +484,33 @@
 <p>Take as an example homophily by disease status. In this case, it is the ratio of number of recruits that have the same disease status as their recruiter to the number we would expect by chance. The difference with the Population Homophily is that here we calculate for the recruitment chain rather than the whole population of social ties.</p>
 <p>If the recruitment homophily on disease status is about 1, we see little effect of recruitment homophily. Values larger than one indicate more homophily.</p>
 <p>The following shows how to calculate recruitment homophily on disease status for the fauxmadrona data set.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="fu"><a href="../reference/homophily.estimates.html">homophily.estimates</a></span><span class="op">(</span><span class="va">fauxmadrona</span>, outcome.variable <span class="op">=</span> <span class="st">"disease"</span>, recruitment <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; Recruitment Homophily for disease </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Homophily = 1.236342 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                      disease of recruit</span>
+<span class="co">#&gt; disease of respondent   1   0</span>
+<span class="co">#&gt;                     1  70  64</span>
+<span class="co">#&gt;                     0  57 299</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Number of cases in table: 490 </span>
+<span class="co">#&gt; Number of factors: 2 </span>
+<span class="co">#&gt; Test for independence of all factors:</span>
+<span class="co">#&gt;  Chisq = 66.55, df = 1, p-value = 3.419e-16</span></pre></div>
 <p>Tendency of like to recruit like. Lots of homophily -&gt; High Variance</p>
 <p>Homophily near 1 means no homophily p-values assume a simple random sample, so only use them as rough guides.</p>
-<p>Population Homophily is very similar to recruitment homophily, except here we estimate the homophily for the population as a whole, and the function only outputs that estimate (no other descriptives). The function demands an additional estimate of the population size, which can be calculated using the size package. (Note, the homophily estimate may not be very sensitive to the population size estimate.) For further description of homophily, see the recruitment homophily page.</p>
+<p>Population Homophily (calculcated when <code>recruitment = FALSE</code>)is very similar to recruitment homophily, except here we estimate the homophily for the population as a whole, and the function only outputs that estimate (no other descriptives). The function demands an additional estimate of the population size, which can be calculated using the size package. (Note, the homophily estimate may not be very sensitive to the population size estimate.) For further description of homophily, see the recruitment homophily page.</p>
 </div>
 <div id="compare-network-activity-of-sub-populations-differential-activity" class="section level3">
 <h3 class="hasAnchor">
 <a href="#compare-network-activity-of-sub-populations-differential-activity" class="anchor"></a>Compare Network Activity of Sub-populations: Differential Activity</h3>
 <p>The distribution of network size (a.k.a. degree) of members of the target population may depend on some characteristic(s) of the population. For example, if the characteristic of interest is the prevalence of a contagious disease, those with the disease may also have a higher average number of connections in the social network. The differential activity dialog compares the (weighted) average network size of two classes of the population, e.g. those with and without a disease.</p>
 <p>The user inputs the choice of data set and binary variable(s) on which to compare members of the population, e.g. disease status.</p>
-<p>The output is, for example: “The mean degree of those with value 1 divided by the mean degree of those without is 0.6189263”</p>
+<div class="sourceCode" id="cb19"><pre class="downlit">
+<span class="fu"><a href="../reference/differential.activity.estimates.html">differential.activity.estimates</a></span><span class="op">(</span><span class="va">fauxmadrona</span>, outcome.variable <span class="op">=</span> <span class="st">"disease"</span><span class="op">)</span>
+<span class="co">#&gt; The mean degree of those with value 1 divided by the mean degree of those without is 1.764372</span></pre></div>
 <p>Note that “those with value 1” refers to the group that is ordered second alphabetically or numerically. If the variable has named states, e.g. “blue” and “red”, the function will order alphabetically by default. If the states are integers, “those with value 1” would be those with the higher-number state.</p>
 </div>
 <div id="test-of-trend" class="section level3">
