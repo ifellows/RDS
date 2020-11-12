@@ -17,22 +17,21 @@ knitr::opts_chunk$set(
 
 ## Intro on RDS: Respondent-Driven Sampling
 
-Hidden and hard to reach populations: No sampling frame​
+RDS was designed to survey hidden and hard-to-reach populations: No sampling frame; traditional sampling methods are not possible​
 
-Often want to remain hidden due to practices and behaviors that are illegal or stigmatized
+These populations often want to remain hidden due to practices and behaviors that are illegal or stigmatized (i.e. sex workers, injection drug users, men who have sex with men).
 
-Assumptions: 
-Respondents know each other as members of the target population (and these are reciprocal)​
+#### Assumptions: 
+__Respondents know each other as members of the target population (and these are reciprocal)__. For example, injuction drug users (IDUs) that know each other and also know each other to be an injection drug user. ​
 
-Respondents are linked by a network composed of a single component​
+__Respondents' networks are linked and form a single network, rather than multiple, disconnected networks__, such that any member of the population population is reachable from any other member through the network. An example where this assumption is not met would be if the population of interest's (injection drug users) network is separated by socioeconomic status (SES). So that IDUs with low SES are members of a network that is separate and does not interact with the network formed by IDUs with high SES. These would be two subsets of the population that are disconnected and cannot be reached by the peer recruitment process and thus the RDS findings will not be generalizable to these groups ​
 
-Sampling occurs with replacement (population from which a sample is gathered is infinitely large)​
+__Sampling occurs with replacement__ (population from which a sample is gathered is infinitely large and will not 'run out' of respondents during the recruitment)​
 
-Respondents can accurately report their personal network size (and this needs to be measured)​
+__Respondents can accurately report their personal network size__ (and this needs to be measured). 'How many other [insert eligibility criteria/ population of interest] do you know?' Network size is used for weighting to account for respondents who are have larger vs. smaller network sizes (peopl who are more vs. less social and popular), and hence have more or less chance of being recruited. ​
 
-Peer recruitment is a random selection from the recruiter’s network​
+__Peer recruitment is a random selection from the recruiter’s network__. RDS assumes that respondents recruit as though they were selecting randomly from their personal networks. ​
 
-Each respondent recruits a single peer
 
 
 * Sampling design:  Require respondents to choose from among their social circle rather than the researcher chooses.
