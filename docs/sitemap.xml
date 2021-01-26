@@ -139,9 +139,6 @@
     <loc>https://github.com/ifellows/RDS/reference/impute.degree.html</loc>
   </url>
   <url>
-    <loc>https://github.com/ifellows/RDS/reference/impute.visibility.html</loc>
-  </url>
-  <url>
     <loc>https://github.com/ifellows/RDS/reference/impute.visibility_mle.html</loc>
   </url>
   <url>
@@ -208,9 +205,6 @@
     <loc>https://github.com/ifellows/RDS/reference/summary.svyglm.RDS.html</loc>
   </url>
   <url>
-    <loc>https://github.com/ifellows/RDS/reference/summary.svyglm.html</loc>
-  </url>
-  <url>
     <loc>https://github.com/ifellows/RDS/reference/transition.counts.to.Markov.mle.html</loc>
   </url>
   <url>
@@ -233,5 +227,8 @@
   </url>
   <url>
     <loc>https://github.com/ifellows/RDS/articles/How-to.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ifellows/RDS/articles/RDS-tut.html</loc>
   </url>
 </urlset>
